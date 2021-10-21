@@ -1,5 +1,6 @@
 class Tweet < ApplicationRecord
   #TODO: validates
+  validates :message, presence: true, length: { minimum: 1, maximum: 140}
   def like(user)
     likes.create(user_id: user.id)
   end

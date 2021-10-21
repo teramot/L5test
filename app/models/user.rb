@@ -1,5 +1,7 @@
 class User < ApplicationRecord
   #TODO: validates
+  validates :uid, uniqueness: true, presence: true
+  
   def password=(val)
     if val.present?
       self.pass = BCrypt::Password.create(val)
