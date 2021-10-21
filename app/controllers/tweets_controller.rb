@@ -9,10 +9,11 @@ class TweetsController < ApplicationController
 
   def create
     #ログイン中にしたツイートリンクが表示されないのでsession[:user_id]が空であることは考慮しなくてよい
-    user = User.find_by(uid: session[:login_uid])
+    user = User.find_by(uid: current_user.uid)
     @tweet = Tweet.new(message: params[:tweet][:message], user_id: user.id)
     if @tweet.save
       #TODO: ツイートが成功したことをユーザに知らせる
+      flash[:notice] = 'ツイートしました'
       redirect_to root_path
     else
       render 'new'
@@ -21,7 +22,9 @@ class TweetsController < ApplicationController
 
   def destroy
     tweet = Tweet.find(params[:id])
-    tweet.destroy
+    if tweet.destroy
+      flash[:notice] = 'ツイートが削除されました'
+    end
     redirect_to root_path
   end
 end
